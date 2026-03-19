@@ -8,6 +8,8 @@ void wrapIntervals(pybind11::module &mod){
     using namespace capd;
     typedef interval::BoundType BoundType;
 
+    py::register_exception<capd::intervals::IntervalError<BoundType>>(mod, "IntervalError");
+
     py::class_<interval>(mod, "Interval")
         .def(py::init<>())
         .def(py::init<BoundType>())
@@ -34,18 +36,15 @@ void wrapIntervals(pybind11::module &mod){
         .def("mid", &interval::mid, "returns middle point of interval")
         .def("abs", &interval::abs, "Returns the interval of absolute values of this interval, i.e.")
         .def("split",
-            [](const interval& iv){
-                interval mid,r;
-                iv.split(mid, r);
-                return std::make_pair(mid, r);
+            py::overload_cast<interval &, interval &>(&interval::split, py::const_),
+            "Splits interval into the form  mid + remainder, where mid - is middle point")
+        .def("split",
+            [](interval &A_iv, interval &A_rRemainder) {
+                BoundType mid;
+                A_iv.split(mid, A_rRemainder);
+                return mid;
             },
             "Splits interval into the form  mid + remainder, where mid - is middle point")
-        // .def("split",
-        //     py::overload_cast<double &, interval &>(&interval::split, py::const_),
-        //     "Splits interval into the form  mid + remainder, where mid - is middle point")
-        // .def("split",
-        //     py::overload_cast<interval &>(&interval::split),
-        //     "Splits interval into the form  mid + remainder, where mid - is middle point")
         .def_static("pi", &interval::pi, "returns pi constant")
         .def_static("euler", &interval::euler, "returns euler constant")
         .def(py::self += py::self)
