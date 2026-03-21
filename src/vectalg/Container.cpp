@@ -5,7 +5,7 @@ void wrapContainer(pybind11::module &mod){
     namespace py = pybind11;
     using namespace capd;
     using namespace capd::vectalg;
-    using IContainer = Container<capd::interval, 0>;
+    using IContainer = Container<capd::interval, CAPD_DEFAULT_DIMENSION>;
 
     py::class_<IContainer>(mod, "IContainer")
         .def(py::init<>())
@@ -23,7 +23,7 @@ void wrapContainer(pybind11::module &mod){
                 return c[index];
             })
         .def("__setitem__",
-            [](IContainer &c, int index, const interval &value) {
+            [](IContainer &c, int index, const IContainer::ScalarType &value) {
                 c[index] = value;
             })
         .def("__len__", &IContainer::size)
