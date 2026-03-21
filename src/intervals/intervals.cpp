@@ -184,4 +184,6 @@ void wrapIntervals(pybind11::module &mod){
     //         interval result = solveAffineInclusion(a, p, c, dir);
     //         return std::make_tuple(result, dir);
     //     }, "solves inclusion a+[0,t]*p \\subset c for t");
+
+    py::implicitly_convertible<BoundType, interval>();
 }
