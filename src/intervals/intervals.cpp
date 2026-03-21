@@ -1,5 +1,3 @@
-#include <pybind11/pybind11.h>
-#include <pybind11/operators.h>
 #include <capd/intervals/lib.h>
 #include <sstream>
 

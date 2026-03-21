@@ -1,6 +1,3 @@
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/operators.h>
 #include <capd/vectalg/Container.h>
 #include <capd/vectalg/Vector.h>
 #include <capd/vectalg/Vector.hpp>

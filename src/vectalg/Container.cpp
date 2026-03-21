@@ -1,4 +1,3 @@
-#include <pybind11/pybind11.h>
 #include <capd/vectalg/Container.h>
 
 void wrapContainer(pybind11::module &mod){
