@@ -11,6 +11,8 @@ void wrapVector(pybind11::module &mod){
     using IVector = Vector<interval, CAPD_DEFAULT_DIMENSION>;
     using ScalarType = IVector::ScalarType;
 
+    py::register_exception<EmptyIntersectionException>(mod, "EmptyIntersectionError");
+
     py::class_<IVector, IVector::ContainerType>(mod, "IVector")
         .def(py::init<>())
         .def(py::init<IVector::size_type>())
