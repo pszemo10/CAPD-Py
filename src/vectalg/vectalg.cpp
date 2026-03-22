@@ -2,9 +2,15 @@
 #include "Container.cpp"
 #include "Vector.cpp"
 #include "MatrixContainer.cpp"
+#include "Matrix.cpp"
+#include "ColumnVector.cpp"
+#include "RowVector.cpp"
 
 void wrapVectalg(pybind11::module &mod) {
     wrapContainer(mod);
     wrapVector(mod);
     wrapMatrixContainer(mod);
+    wrapMatrix(mod);
+    wrapColumnVector(mod);
+    wrapRowVector(mod);
 }
