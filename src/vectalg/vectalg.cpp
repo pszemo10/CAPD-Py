@@ -5,6 +5,7 @@
 #include "Matrix.cpp"
 #include "ColumnVector.cpp"
 #include "RowVector.cpp"
+#include "Norm.cpp"
 
 void wrapVectalg(pybind11::module &mod) {
     wrapContainer(mod);
@@ -13,4 +14,5 @@ void wrapVectalg(pybind11::module &mod) {
     wrapMatrix(mod);
     wrapColumnVector(mod);
     wrapRowVector(mod);
+    wrapNorm(mod);
 }
