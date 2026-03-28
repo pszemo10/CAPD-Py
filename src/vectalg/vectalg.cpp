@@ -6,6 +6,7 @@
 #include "ColumnVector.cpp"
 #include "RowVector.cpp"
 #include "Norm.cpp"
+#include "Multiindex.cpp"
 
 void wrapVectalg(pybind11::module &mod) {
     wrapContainer(mod);
@@ -15,4 +16,5 @@ void wrapVectalg(pybind11::module &mod) {
     wrapColumnVector(mod);
     wrapRowVector(mod);
     wrapNorm(mod);
+    wrapMultiindex(mod);
 }

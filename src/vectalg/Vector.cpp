@@ -18,7 +18,7 @@ void wrapVector(pybind11::module &mod){
         .def(py::init<IVector::size_type>())
         .def(py::init<const std::string&>())
         .def(py::init(
-            [&](const std::vector<ScalarType>& data) {
+            [](const std::vector<ScalarType>& data) {
                 return IVector(data.begin(), data.end());
             }))
         .def(py::init<IVector::size_type, bool>(), "it does not insert zeros")
@@ -39,7 +39,6 @@ void wrapVector(pybind11::module &mod){
                 return result;
             })
         .def_static("degree", &IVector::degree)
-        // .def_static("makeArray", &IVector::makeArray)
         .def("__repr__",
             [](const IVector &v) {
                 std::ostringstream oss;
