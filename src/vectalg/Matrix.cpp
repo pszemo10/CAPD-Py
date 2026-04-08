@@ -1,4 +1,5 @@
 #include <capd/vectalg/Matrix.h>
+#include <capd/diffAlgebra/Jet.h>
 
 void wrapMatrix(pybind11::module &mod){
     namespace py = pybind11;
@@ -76,6 +77,10 @@ void wrapMatrix(pybind11::module &mod){
         .def(py::self >= py::self)
         .def(py::self == py::self)
         .def(py::self != py::self)
+
+        // Jet.h
+
+        .def("__matmul__", &::operator*<IMatrix, CAPD_DEFAULT_DIMENSION>)
         ;
 
     mod.def("transpose", &transpose<ScalarType, Rows, Cols>);
