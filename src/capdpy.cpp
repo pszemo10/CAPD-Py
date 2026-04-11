@@ -5,6 +5,8 @@
 #include "vectalg/vectalg.cpp"
 #include "map/map.cpp"
 #include "diffAlgebra/diffAlgebra.cpp"
+#include "dynset/dynset.cpp"
+#include "dynsys/dynsys.cpp"
 
 namespace py = pybind11;
 
@@ -13,4 +15,6 @@ PYBIND11_MODULE(capdpy, m, py::mod_gil_not_used()){
     wrapVectalg(m);
     wrapMapModule(m);
     wrapDiffAlgebra(m);
+    wrapDynset(m);
+    wrapDynsys(m);
 }
