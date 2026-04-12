@@ -9,8 +9,8 @@ void wrapCurve(pybind11::module& mod, const std::string& name)
     using IMap = map::Map<vectalg::Matrix<interval, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>>;
     using ICurve = Curve<BaseCurveT>;
 
-    py::class_<ICurve, BaseCurveT, ParametricCurve<typename BaseCurveT::MatrixType>,
-        std::unique_ptr<ICurve, py::nodelete>>(mod, name.c_str())
+    py::class_<ICurve, BaseCurveT, ParametricCurve<typename BaseCurveT::MatrixType>>
+        (mod, name.c_str())
         .def("timeDerivative", &ICurve::timeDerivative)
         .def("__call__", &ICurve::operator())
         .def("derivative", &ICurve::derivative)

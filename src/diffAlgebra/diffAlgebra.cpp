@@ -14,6 +14,7 @@
 #include "BasicCnCurve.cpp"
 #include "C2Curve.cpp"
 #include "CnCurve.cpp"
+#include "TimeJet.cpp"
 
 void wrapDiffAlgebra(pybind11::module_& mod){
     using namespace capd;
@@ -37,4 +38,5 @@ void wrapDiffAlgebra(pybind11::module_& mod){
     wrapBasicCnCurve(mod);
     wrapC2Curve(mod);
     wrapCnCurve(mod);
+    wrapTimeJet(mod);
 }
