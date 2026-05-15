@@ -23,7 +23,9 @@ void wrapBasicFunction(pybind11::module &mod) {
         .def("setParameter", py::overload_cast<const std::string&, const capd::interval&>
             (&IBasicFunction::setParameter),
             "sets new value of a parameter. If parameter not found there is no effect.")
-        .def("setParameters", &IBasicFunction::setParameters,
+        .def("setParameters", [](IBasicFunction& self, const std::vector<capd::interval>& values) {
+            self.setParameters(values.data(), values.size());
+        },
             "simultaneously sets values of many parameters. It is assumed that given vector"
             " contains values of subsequent parameters.")
         .def("getParameter", py::overload_cast<IBasicFunction::size_type>

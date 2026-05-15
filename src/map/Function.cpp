@@ -11,6 +11,7 @@ void wrapFunction(pybind11::module &mod) {
         .def(py::init<>(), "creates an univariate constant function f(x)=0")
         .def(py::init<const std::string&>(), "parses expression from given string. "
         "Allocates memory for ODE solver of order 'order'")
+        .def(py::init<const IFunction&>(), "copying constructor")
         .def("__call__", py::overload_cast<const capd::interval&>(&IFunction::operator(), py::const_),
             "evaluates function a(for univariate case)")
         .def("__call__", py::overload_cast<const IVector&>(&IFunction::operator(), py::const_),
