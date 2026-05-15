@@ -10,9 +10,11 @@ void wrapC2Curve(pybind11::module_& mod)
     using BaseCurve = BasicC2Curve<IMap::MatrixType>;
     using IC2Curve = C2Curve<BaseCurve>;
     using size_type = IC2Curve::size_type;
+    using Real = IC2Curve::Real;
 
     py::class_<IC2Curve, Curve<BaseCurve>,
         BaseCurve, ParametricCurve<typename BaseCurve::MatrixType>>(mod, "IC2Curve")
+        .def(py::init<Real, Real, size_type, size_type, size_type>())
         .def("hessian", &IC2Curve::hessian)
         .def("setInitHessian", &IC2Curve::setInitHessian)
         ;

@@ -1,4 +1,5 @@
 #include <capd/diffAlgebra/Hessian.h>
+#include <capd/diffAlgebra/Jet.hpp>
 
 void wrapHessian(pybind11::module_& mod){
     namespace py = pybind11;
@@ -11,10 +12,12 @@ void wrapHessian(pybind11::module_& mod){
     using IMatrix = capd::vectalg::Matrix<ScalarType, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>;
 
     py::class_<IHessian, vectalg::Container<ScalarType, CAPD_DEFAULT_DIMENSION>>(mod, "IHessian")
+        .def(py::init<const IHessian&>())
         .def(py::init<>())
+        .def(py::init<size_type>())
         .def(py::init<size_type, size_type>())
-        .def(py::init([](size_type rows, size_type cols, const std::vector<ScalarType>& data) {
-            return IHessian(rows, cols, data.data());
+        .def(py::init([](size_type image, size_type domain, const std::vector<ScalarType>& data) {
+            return IHessian(image, domain, data.data());
         }))
         .def("__getitem__", [](const IHessian &h,
             std::tuple<size_type,size_type,size_type> index) {
@@ -35,9 +38,18 @@ void wrapHessian(pybind11::module_& mod){
         .def("resize", &IHessian::resize)
         .def(py::self == py::self)
         .def(py::self != py::self)
-        .def(py::self * IMatrix())
         .def(IMatrix() * py::self)
+        .def(py::self * IMatrix())
         .def(ScalarType() * py::self)
         .def(py::self + py::self)
+
+        // from sets
+
+        .def(py::init([](const typename diffAlgebra::Jet<IMatrix, CAPD_DEFAULT_DIMENSION>& jet) {
+            return (IHessian)jet;
+        }))
+        .def(py::init([](const C2Set& set){
+            return (IHessian)set;
+        }))
         ;
 }

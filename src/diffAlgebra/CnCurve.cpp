@@ -9,9 +9,11 @@ void wrapCnCurve(pybind11::module_& mod)
     using BaseCurve = BasicCnCurve<IMap::MatrixType>;
     using ICnCurve = CnCurve<BaseCurve>;
     using size_type = ICnCurve::size_type;
+    using Real = ICnCurve::Real;
 
     py::class_<ICnCurve, Curve<BaseCurve>,
         BaseCurve, ParametricCurve<typename BaseCurve::MatrixType>>(mod, "ICnCurve")
+        .def(py::init<Real, Real, size_type, size_type, size_type>())
         .def("hessian", &ICnCurve::hessian)
         .def("setInitHessian", &ICnCurve::setInitHessian)
         .def("setInitJet", &ICnCurve::setInitJet)

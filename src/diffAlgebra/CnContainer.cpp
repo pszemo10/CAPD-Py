@@ -20,6 +20,7 @@ void wrapCnContainer(pybind11::module_& mod){
         .def(py::init<size_type, size_type, size_type>(),
             "creates a container for polynomial of n variables, m components and degree d. "
             "Default constructor will be used to initialize each element in the container.")
+        .def(py::init<const ICnContainer&>())
         .def("imageDimension", &ICnContainer::imageDimension,
             "returns number of polynomials (dimension of counterdomain)")
         .def("dimension", &ICnContainer::dimension,

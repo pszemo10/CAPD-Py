@@ -3,6 +3,9 @@
 #include <capd/diffAlgebra/BasicCurve.h>
 #include <capd/diffAlgebra/BasicC2Curve.h>
 #include <capd/diffAlgebra/BasicCnCurve.h>
+#include <capd/dynsys/OdeSolver.h>
+#include <capd/dynsys/C2OdeSolver.h>
+#include <capd/dynsys/CnOdeSolver.h>
 
 #include "Hessian.cpp"
 #include "CnContainer.cpp"
@@ -15,6 +18,7 @@
 #include "C2Curve.cpp"
 #include "CnCurve.cpp"
 #include "TimeJet.cpp"
+#include "SolutionCurve.cpp"
 
 void wrapDiffAlgebra(pybind11::module_& mod){
     using namespace capd;
@@ -23,20 +27,24 @@ void wrapDiffAlgebra(pybind11::module_& mod){
     using IBasicCurve = BasicCurve<IMap::MatrixType>;
     using IBasicC2Curve = BasicC2Curve<IMap::MatrixType>;
     using IBasicCnCurve = BasicCnCurve<IMap::MatrixType>;
+    using IOdeSolver = dynsys::OdeSolver<IMap>;
+    using IC2OdeSolver = dynsys::C2OdeSolver<IMap>;
+    using ICnOdeSolver = dynsys::CnOdeSolver<IMap>;
 
     wrapHessian(mod);
     wrapCnContainer(mod);
     wrapJet(mod);
     wrapParametricCurve<IBasicCurve::MatrixType>(mod, "IParametricCurve");
-    wrapParametricCurve<IBasicC2Curve::MatrixType>(mod, "IParametricCurve_C2");
-    wrapParametricCurve<IBasicCnCurve::MatrixType>(mod, "IParametricCurve_Cn");
     wrapBasicCurve(mod);
-    wrapCurve<IBasicCurve>(mod, "IBasicCurve");
-    wrapCurve<IBasicC2Curve>(mod, "IBasicCurve_C2");
-    wrapCurve<IBasicCnCurve>(mod, "IBasicCurve_Cn");
     wrapBasicC2Curve(mod);
     wrapBasicCnCurve(mod);
+    wrapCurve<IBasicCurve>(mod, "ICurve");
+    wrapCurve<IBasicC2Curve>(mod, "ICurve_C2");
+    wrapCurve<IBasicCnCurve>(mod, "ICurve_Cn");
     wrapC2Curve(mod);
     wrapCnCurve(mod);
     wrapTimeJet(mod);
+    wrapSolutionCurve<IOdeSolver::SolutionCurve>(mod, "IBaseSolutionCurve", "ISolutionCurve");
+    wrapSolutionCurve<IC2OdeSolver::SolutionCurve>(mod, "IBaseSolutionCurve_C2", "ISolutionCurve_C2");
+    wrapSolutionCurve<ICnOdeSolver::SolutionCurve>(mod, "IBaseSolutionCurve_Cn", "ISolutionCurve_Cn");
 }

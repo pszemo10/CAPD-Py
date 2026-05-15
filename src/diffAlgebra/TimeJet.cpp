@@ -38,7 +38,7 @@ void wrapTimeJet(pybind11::module& mod) {
             return ss.str();
         })
         .def("dimension", &IC0TimeJet::dimension)
-        .def("degree", &IC0TimeJet::degree)
+        .def_static("degree", &IC0TimeJet::degree)
         ;
 
     py::class_<IC1TimeJet, IC0TimeJet>(mod, "IC1TimeJet")
@@ -54,7 +54,7 @@ void wrapTimeJet(pybind11::module& mod) {
             ss << jet;
             return ss.str();
         })
-        .def("degree", &IC1TimeJet::degree)
+        .def_static("degree", &IC1TimeJet::degree)
         ;
 
     py::class_<IC2TimeJet, IC1TimeJet>(mod, "IC2TimeJet")
@@ -73,7 +73,7 @@ void wrapTimeJet(pybind11::module& mod) {
             ss << jet;
             return ss.str();
         })
-        .def("degree", &IC2TimeJet::degree)
+        .def_static("degree", &IC2TimeJet::degree)
         ;
 
     py::class_<ICnTimeJet, ITimeRange>(mod, "ICnTimeJet")

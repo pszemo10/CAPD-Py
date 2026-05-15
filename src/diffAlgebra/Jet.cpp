@@ -20,6 +20,7 @@ void wrapJet(pybind11::module_& mod){
         .def(py::init<>())
         .def(py::init<size_type, size_type>())
         .def(py::init<size_type, size_type, size_type>())
+        .def(py::init<const IJet&>())
         .def("__getitem__", py::overload_cast<const vectalg::Multipointer&>(&IJet::operator(), py::const_),
             "this operator returns a vector of partial derivatives, i.e. result[i] = d^{mp}f_i")
         .def("__getitem__", py::overload_cast<const vectalg::Multiindex&>(&IJet::operator(), py::const_),
