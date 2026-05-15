@@ -1,4 +1,4 @@
-#include <capd/dynsys/BasicC2OdeSolver.h>
+#include <capd/dynsys/BasicC2OdeSolver.hpp>
 
 void wrapBasicC2OdeSolver(pybind11::module& mod) {
     namespace py = pybind11;
@@ -13,6 +13,10 @@ void wrapBasicC2OdeSolver(pybind11::module& mod) {
     using ScalarType = IBasicC2OdeSolver::ScalarType;
     using HessianType = IBasicC2OdeSolver::HessianType;
     using size_type = IBasicC2OdeSolver::size_type;
+    using IC0TimeJet = diffAlgebra::C0TimeJet<MatrixType::RowVectorType>;
+    using IC1TimeJet = diffAlgebra::C1TimeJet<MatrixType>;
+    using IC2TimeJet = diffAlgebra::C2TimeJet<MatrixType>;
+    using ICnTimeJet = diffAlgebra::CnTimeJet<MatrixType, 0>;
 
     py::class_<IBasicC2OdeSolver, BasicOdeSolver<IMap, StepControlType, CurveType>>
         (mod, "IBasicC2OdeSolver")
@@ -38,5 +42,17 @@ void wrapBasicC2OdeSolver(pybind11::module& mod) {
             (&IBasicC2OdeSolver::operator()),
             "The routine computes next point, derivatives and second order derivatives of a nonautonomous flow. "
             "Initial conditions for variational equations are V and H, respectively.")
+        .def("__call__", static_cast<void (IBasicC2OdeSolver::*) (IC0TimeJet&)>
+            (&IBasicC2OdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (IBasicC2OdeSolver::*) (IC1TimeJet&)>
+            (&IBasicC2OdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (IBasicC2OdeSolver::*) (IC2TimeJet&)>
+            (&IBasicC2OdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (IBasicC2OdeSolver::*) (ICnTimeJet&)>
+            (&IBasicC2OdeSolver::operator()),
+            "This throws an exception, this solver cannot be used with this jet")
         ;
 }

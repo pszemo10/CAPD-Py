@@ -1,4 +1,24 @@
-#include <capd/dynsys/OdeSolver.h>
+#include <capd/dynsys/OdeSolver.hpp>
+#include <capd/dynset/lib.h>
+
+
+template<typename OdeSolverType, typename... Sets>
+void wrapOperatorsForC0C1(pybind11::class_<OdeSolverType, typename OdeSolverType::BaseTaylor>& solver)
+{
+    (..., solver.def("__call__", static_cast<void (OdeSolverType::*) (Sets&)> (&OdeSolverType::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (OdeSolverType::*) (Sets&, Sets&)> (&OdeSolverType::operator()),
+            "Computes image of the set (in set's representation) and stores it in the result set."));
+}
+
+template<typename OdeSolverType, typename... Sets>
+void wrapOperatorsForC2Cn(pybind11::class_<OdeSolverType, typename OdeSolverType::BaseTaylor>& solver)
+{
+    (..., solver.def("__call__", static_cast<void (OdeSolverType::*) (Sets&)> (&OdeSolverType::operator()),
+            "This throws an exception, this solver cannot be used with this set")
+        .def("__call__", static_cast<void (OdeSolverType::*) (Sets&, Sets&)> (&OdeSolverType::operator()),
+            "This throws an exception, this solver cannot be used with this set."));
+}
 
 template<typename CurveType>
 void wrapOdeSolver(pybind11::module& mod, const std::string& name) {
@@ -15,8 +35,8 @@ void wrapOdeSolver(pybind11::module& mod, const std::string& name) {
     using C1TimeJetType = OdeSolverType::C1TimeJetType;
 
     py::class_<OdeSolverType, BasicOdeSolver<IMap, StepControlType, CurveType>>
-        (mod, name.c_str(), py::multiple_inheritance())
-        .def(py::init<typename OdeSolverType::VectorFieldType&, size_type, const StepControlType&>(),
+        solver(mod, name.c_str(), py::multiple_inheritance());
+    solver.def(py::init<typename OdeSolverType::VectorFieldType&, size_type, const StepControlType&>(),
             py::arg("field"), py::arg("order"), py::arg("stepControl") = StepControlType())
         .def("setOrder", &OdeSolverType::setOrder, "Sets the order of the Taylor method.")
         .def("Phi", &OdeSolverType::Phi)
@@ -45,4 +65,9 @@ void wrapOdeSolver(pybind11::module& mod, const std::string& name) {
         .def("getImplicitCurve", &OdeSolverType::getImplicitCurve)
         .def("computeTimeStep", &OdeSolverType::computeTimeStep)
         ;
+
+    wrapOperatorsForC0C1<OdeSolverType, C0Rect2Set, C0TripletonSet, C0HORect2Set, C0HOTripletonSet,
+        C1Rect2Set, C1HORect2Set, C11Rect2Set>(solver);
+    wrapOperatorsForC2Cn<OdeSolverType, C2Rect2Set, CnRect2Set>(solver);
+    
 }

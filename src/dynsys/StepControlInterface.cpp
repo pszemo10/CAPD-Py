@@ -8,6 +8,8 @@ void wrapStepControlInterface(pybind11::module& mod, const std::string name) {
     using IMap = map::Map<vectalg::Matrix<interval, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>>;
     using StepControlInterfaceType = StepControlInterface<StepControlPolicy, IMap::ScalarType>;
 
+    py::class_<StepControlPolicy>(mod, (name + "Policy").c_str());
+    
     py::class_<StepControlInterfaceType>(mod, name.c_str())
         .def(py::init<>())
         .def("turnOnStepControl", &StepControlInterfaceType::turnOnStepControl)

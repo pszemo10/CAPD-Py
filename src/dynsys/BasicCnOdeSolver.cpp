@@ -1,4 +1,4 @@
-#include <capd/dynsys/BasicCnOdeSolver.h>
+#include <capd/dynsys/BasicCnOdeSolver.hpp>
 
 void wrapBasicCnOdeSolver(pybind11::module& mod) {
     namespace py = pybind11;
@@ -13,6 +13,10 @@ void wrapBasicCnOdeSolver(pybind11::module& mod) {
     using ScalarType = IBasicCnOdeSolver::ScalarType;
     using HessianType = IBasicCnOdeSolver::HessianType;
     using size_type = IBasicCnOdeSolver::size_type;
+    using IC0TimeJet = diffAlgebra::C0TimeJet<MatrixType::RowVectorType>;
+    using IC1TimeJet = diffAlgebra::C1TimeJet<MatrixType>;
+    using IC2TimeJet = diffAlgebra::C2TimeJet<MatrixType>;
+    using ICnTimeJet = diffAlgebra::CnTimeJet<MatrixType, 0>;
 
     py::class_<IBasicCnOdeSolver, StepControlInterface<StepControlType, IMap::ScalarType>, CurveType>
         (mod, "IBasicCnOdeSolver")
@@ -39,6 +43,18 @@ void wrapBasicCnOdeSolver(pybind11::module& mod) {
             (&IBasicCnOdeSolver::operator()),
             "Computes image of vector v and derivatives of a flow with respect to init condition (v, derivative). "
             "The argument t is updated in this procedure.")
+        .def("__call__", static_cast<void (IBasicCnOdeSolver::*) (IC0TimeJet&)>
+            (&IBasicCnOdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (IBasicCnOdeSolver::*) (IC1TimeJet&)>
+            (&IBasicCnOdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (IBasicCnOdeSolver::*) (IC2TimeJet&)>
+            (&IBasicCnOdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (IBasicCnOdeSolver::*) (ICnTimeJet&)>
+            (&IBasicCnOdeSolver::operator()),
+            "This operator computes image of the set (in given representation)")
         .def("__call__", static_cast<VectorType (IBasicCnOdeSolver::*)
             (VectorType, MatrixType&, HessianType&)>(&IBasicCnOdeSolver::operator()),
             "Computes next point on the trajectory, "
@@ -59,6 +75,12 @@ void wrapBasicCnOdeSolver(pybind11::module& mod) {
             (&IBasicCnOdeSolver::operator()),
             "The routine computes next point, derivatives and second order derivatives of a nonautonomous flow. "
             "Initial conditions for variational equations are V and H, respectively.")
+        .def("__call__", static_cast<VectorType (IBasicCnOdeSolver::*) (ScalarType&, IBasicCnOdeSolver::JetType&)>
+            (&IBasicCnOdeSolver::operator()),
+            "Initial conditions for the trajectory and for variational equations "
+            "up to given degree are given in argument in_out_coeffs. "
+            "The full result is stored in in_out_coeffs and also the new point on the trajectory is returned. "
+            "Note: CnCoeffType is a data structure that stores current time.")
         .def("computeCoefficientsAtCenter", py::overload_cast<const VectorType&, size_type>
             (&IBasicCnOdeSolver::computeCoefficientsAtCenter))
         .def("computeCoefficientsAtCenter", py::overload_cast<ScalarType, const VectorType&, size_type>
@@ -79,7 +101,6 @@ void wrapBasicCnOdeSolver(pybind11::module& mod) {
         .def("getCurve", &IBasicCnOdeSolver::getCurve)
         .def("degree", &IBasicCnOdeSolver::degree)
         .def("getCoeffNorm", &IBasicCnOdeSolver::getCoeffNorm)
-        .def("dimension", &IBasicCnOdeSolver::dimension)
         .def("adjustTimeStep", &IBasicCnOdeSolver::adjustTimeStep,
             "sets time step but does not change step control settings (compare setStep)")
         .def("setMask", [](IBasicCnOdeSolver& solver, const std::vector<Multiindex>& multiindices) {

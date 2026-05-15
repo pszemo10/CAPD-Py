@@ -1,4 +1,4 @@
-#include <capd/dynsys/BasicOdeSolver.h>
+#include <capd/dynsys/BasicOdeSolver.hpp>
 
 template<typename StepControlType, typename CurveType>
 void wrapBasicOdeSolver(pybind11::module& mod, const std::string& name) {
@@ -11,6 +11,10 @@ void wrapBasicOdeSolver(pybind11::module& mod, const std::string& name) {
     using MatrixType = BasicOdeSolverType::MatrixType;
     using ScalarType = BasicOdeSolverType::ScalarType;
     using size_type = BasicOdeSolverType::size_type;
+    using IC0TimeJet = diffAlgebra::C0TimeJet<typename MatrixType::RowVectorType>;
+    using IC1TimeJet = diffAlgebra::C1TimeJet<MatrixType>;
+    using IC2TimeJet = diffAlgebra::C2TimeJet<MatrixType>;
+    using ICnTimeJet = diffAlgebra::CnTimeJet<MatrixType, 0>;
 
     py::class_<BasicOdeSolverType, StepControlInterface<StepControlType, IMap::ScalarType>, CurveType>
         (mod, name.c_str())
@@ -37,6 +41,18 @@ void wrapBasicOdeSolver(pybind11::module& mod, const std::string& name) {
             (&BasicOdeSolverType::operator()),
             "Computes image of vector v and derivatives of a flow with respect to init condition (v, derivative). "
             "The argument t is updated in this procedure.")
+        .def("__call__", static_cast<void (BasicOdeSolverType::*) (IC0TimeJet&)>
+            (&BasicOdeSolverType::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (BasicOdeSolverType::*) (IC1TimeJet&)>
+            (&BasicOdeSolverType::operator()),
+            "This operator computes image of the set (in given representation)")
+        .def("__call__", static_cast<void (BasicOdeSolverType::*) (IC2TimeJet&)>
+            (&BasicOdeSolverType::operator()),
+            "This throws an exception, this solver cannot be used with this jet")
+        .def("__call__", static_cast<void (BasicOdeSolverType::*) (ICnTimeJet&)>
+            (&BasicOdeSolverType::operator()),
+            "This throws an exception, this solver cannot be used with this jet")
         .def("getVectorField", py::overload_cast<>(&BasicOdeSolverType::getVectorField, py::const_),
             "Returns vector field")
         .def("setOrder", &BasicOdeSolverType::setOrder, "Sets the order of the Taylor method")
