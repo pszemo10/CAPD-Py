@@ -1,4 +1,6 @@
 #include <capd/vectalg/Container.h>
+#include <capd/diffAlgebra/Jet.hpp>
+#include <capd/dynset/lib.h>
 #include <capd/vectalg/Vector.h>
 #include <capd/vectalg/Vector.hpp>
 #include <capd/vectalg/Vector_inline.h>
@@ -9,6 +11,7 @@ void wrapVector(pybind11::module &mod){
     using namespace capd;
     using namespace capd::vectalg;
     using IVector = Vector<interval, CAPD_DEFAULT_DIMENSION>;
+    using IMatrix = Matrix<interval, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>;
     using ScalarType = IVector::ScalarType;
 
     py::register_exception<EmptyIntersectionException>(mod, "EmptyIntersectionError");
@@ -17,6 +20,7 @@ void wrapVector(pybind11::module &mod){
         .def(py::init<>())
         .def(py::init<IVector::size_type>())
         .def(py::init<const std::string&>())
+        .def(py::init<const IVector &>())
         .def(py::init(
             [](const std::vector<ScalarType>& data) {
                 return IVector(data.begin(), data.end());
@@ -52,10 +56,11 @@ void wrapVector(pybind11::module &mod){
         .def(-py::self)
         .def(py::self + py::self)
         .def(py::self - py::self)
-        .def("__matmul__", &capd::vectalg::template operator*<ScalarType, 0>)
+        .def("__matmul__", [](const IVector &self, const IVector &v) { return self*v; })
         .def(py::self + ScalarType())
         .def(py::self - ScalarType())
         .def(py::self * ScalarType())
+        .def(ScalarType() * py::self)
         .def(py::self / ScalarType())
         .def(py::self < py::self)
         .def(py::self > py::self)
@@ -63,6 +68,33 @@ void wrapVector(pybind11::module &mod){
         .def(py::self >= py::self)
         .def(py::self == py::self)
         .def(py::self != py::self)
+
+        // from sets
+
+        .def(py::init([](const typename diffAlgebra::Jet<IMatrix, CAPD_DEFAULT_DIMENSION>& jet) {
+            return (IVector)jet;
+        }))
+        .def(py::init([](const geomset::AffineSet<IMatrix>& set) {
+            return (IVector)set;
+        }))
+        .def(py::init([](const geomset::DoubletonSet<IMatrix>& set) {
+            return (IVector)set;
+        }))
+        .def(py::init([](const geomset::CenteredTripletonSet<IMatrix>& set) {
+            return (IVector)set;
+        }))
+        .def(py::init([](const C0Set& set) {
+            return (IVector)set;
+        }))
+        .def(py::init([](const C1Set& set) {
+            return (IVector)set;
+        }))
+        .def(py::init([](const C2Set& set) {
+            return (IVector)set;
+        }))
+        .def(py::init([](const CnSet& set) {
+            return (IVector)set;
+        }))
         ;
 
     // Vector_Interval.hpp

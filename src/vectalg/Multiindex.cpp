@@ -10,7 +10,7 @@ void wrapMultiindex(pybind11::module &mod)
         .def("__iter__", [](const IntContainer& v) {
             return py::make_iterator(v.begin(), v.end());
         }, py::keep_alive<0, 1>())
-        .def("__reverese__", [](const IntContainer& v) {
+        .def("__reversed__", [](const IntContainer& v) {
             return py::make_iterator(v.rend(), v.rbegin());
         }, py::keep_alive<0, 1>())
         .def("resize", &IntContainer::resize)
@@ -41,6 +41,7 @@ void wrapMultiindex(pybind11::module &mod)
         .def(py::init<>())
         .def(py::init<Multipointer::size_type>())
         .def(py::init<const Multiindex&>())
+        .def(py::init<const Multipointer&>())
         .def(py::init([](std::vector<int>& l) {
             return Multipointer(l.size(), l.data());
         }))
@@ -59,7 +60,7 @@ void wrapMultiindex(pybind11::module &mod)
     mod.def("sumMultipointers", &sumMultipointers);
     mod.def("addIndex", &addIndex, "returns new multipointer which is multiindex mp with index added in correct place");
     mod.def("push_back", &push_back, "appends index to the end of multipointer mp");
-    mod.def("hasIndex", &hasIndex, "checks if muiltipointer contains index");
+    mod.def("hasIndex", &hasIndex, "checks if multipointer contains index");
     mod.def("indexCount", &indexCount, "returns number of occureneces o of index in mp");
     mod.def("removeIndex", &removeIndex);
     mod.def("power", py::overload_cast<
@@ -75,6 +76,7 @@ void wrapMultiindex(pybind11::module &mod)
             return Multiindex(l.size(), l.data());
         }))
         .def(py::init<Multiindex::size_type, bool>())
+        .def(py::init<const Multiindex&>())
         .def("hasNext", py::overload_cast<>(&Multiindex::hasNext))
         .def("module", &Multiindex::module, "returns sum of multiindex coordinates (i.e. degree of monomial)")
         .def("factorial", &Multiindex::factorial, "for multiindex (a,b,..,n) returns a!b!...n!")

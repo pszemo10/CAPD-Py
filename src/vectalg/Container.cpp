@@ -9,7 +9,8 @@ void wrapContainer(pybind11::module &mod){
     py::class_<IContainer>(mod, "IContainer")
         .def(py::init<>())
         .def(py::init<IContainer::size_type>())
-        .def(py::init<IContainer::size_type, bool>()) // ?
+        .def(py::init<IContainer::size_type, bool>())
+        .def(py::init<const IContainer &>())
         .def("__iter__", [](const IContainer &c) {
             return py::make_iterator(c.begin(), c.end());
         }, py::keep_alive<0, 1>())

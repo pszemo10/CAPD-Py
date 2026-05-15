@@ -10,6 +10,7 @@ void wrapIntervals(pybind11::module &mod){
 
     py::class_<interval>(mod, "Interval")
         .def(py::init<>())
+        .def(py::init<const interval &>())
         .def(py::init<BoundType>())
         .def(py::init<BoundType, BoundType>())
         .def(py::init<std::string const &, std::string const &>())
@@ -33,6 +34,7 @@ void wrapIntervals(pybind11::module &mod){
         .def("subsetInterior", &interval::subsetInterior, "checks if interval is subset of interior of iv")
         .def("mid", &interval::mid, "returns middle point of interval")
         .def("abs", &interval::abs, "Returns the interval of absolute values of this interval, i.e.")
+        .def("__abs__", &interval::abs, "Returns the interval of absolute values of this interval, i.e.")
         .def("split",
             py::overload_cast<interval &, interval &>(&interval::split, py::const_),
             "Splits interval into the form  mid + remainder, where mid - is middle point")
@@ -182,6 +184,8 @@ void wrapIntervals(pybind11::module &mod){
     //         interval result = solveAffineInclusion(a, p, c, dir);
     //         return std::make_tuple(result, dir);
     //     }, "solves inclusion a+[0,t]*p \\subset c for t");
+    mod.def("width", &capd::filib::template width<interval::BoundType, 
+            ::filib::native_directed, ::filib::i_mode_normal>);
 
     py::implicitly_convertible<BoundType, interval>();
 }

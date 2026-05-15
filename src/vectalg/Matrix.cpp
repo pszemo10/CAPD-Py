@@ -1,5 +1,6 @@
 #include <capd/vectalg/Matrix.h>
-#include <capd/diffAlgebra/Jet.h>
+#include <capd/diffAlgebra/Jet.hpp>
+#include <capd/dynset/lib.h>
 
 void wrapMatrix(pybind11::module &mod){
     namespace py = pybind11;
@@ -22,10 +23,23 @@ void wrapMatrix(pybind11::module &mod){
                 return IMatrix(rows, cols, data.data());
             }))
         .def(py::init<const std::string&>())
-        // .def(py::init<const MatrixSlice<IMatrix>&>(), "copying from matrix slice")
+        .def(py::init<const IMatrix&>())
         .def(py::init<const IMatrix::Dimension&>(), "assigns 0 to every coordinate")
         .def(py::init<const IMatrix::Dimension&, bool>())
         .def(py::init<IMatrix::size_type, IMatrix::size_type, bool>())
+        .def(py::init([](const std::vector<std::vector<ScalarType>>& data) {
+            std::vector<ScalarType> flatData;
+            IMatrix::size_type rows = data.size();
+            IMatrix::size_type cols = data.empty() ? 0 : data[0].size();
+
+            for(const auto& row : data) {
+                if (row.size() != cols) {
+                    throw std::logic_error("All rows must have the same number of columns");
+                }
+                flatData.insert(flatData.end(), row.begin(), row.end());
+            }
+            return IMatrix(rows,cols,flatData.data());
+        }))
         .def(py::self += py::self, "increase by a matrix")
         .def(py::self -= py::self, "decrease by a matrix")
         .def(py::self += ScalarType(), "increase by a Scalar")
@@ -81,10 +95,36 @@ void wrapMatrix(pybind11::module &mod){
         // Jet.h
 
         .def("__matmul__", &::operator*<IMatrix, CAPD_DEFAULT_DIMENSION>)
+
+        // from sets
+
+        .def(py::init([](const typename diffAlgebra::Jet<IMatrix, CAPD_DEFAULT_DIMENSION>& jet) {
+            return (IMatrix)jet;
+        }))
+        .def(py::init([](const geomset::MatrixAffineSet<IMatrix>& set) {
+            return (IMatrix)set;
+        }))
+        .def(py::init([](const geomset::MatrixDoubletonSet<IMatrix>& set) {
+            return (IMatrix)set;
+        }))
+        .def(py::init([](const C1Set& set){
+            return (IMatrix)set;
+        }))
+        .def(py::init([](const C2Set& set){
+            return (IMatrix)set;
+        }))
+        .def(py::init([](const CnSet& set){
+            return (IMatrix)set;
+        }))
         ;
 
     mod.def("transpose", &transpose<ScalarType, Rows, Cols>);
     mod.def("trace", &trace<capd::interval, Rows, Cols>);
     mod.def("secondTrace", &secondTrace<capd::interval, Rows, Cols>);
 
+    // Matrix_Interval.hpp
+
+    mod.def("midMatrix", &midMatrix<IMatrix>);
+    mod.def("krawczykCorrection", &matrixAlgorithms::krawczykCorrection<IMatrix>);
+    mod.def("krawczykInverse", &matrixAlgorithms::krawczykInverse<IMatrix>);
 }

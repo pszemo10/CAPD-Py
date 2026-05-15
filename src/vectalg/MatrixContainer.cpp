@@ -9,9 +9,10 @@ void wrapMatrixContainer(pybind11::module &mod){
     py::class_<IMatrixContainer, Container<IMatrixContainer::ScalarType, CAPD_DEFAULT_DIMENSION>>(mod, "IMatrixContainer")
         .def(py::init<>())
         .def(py::init<IMatrixContainer::size_type, IMatrixContainer::size_type>())
+        .def(py::init<const IMatrixContainer &>())
         .def(py::init<IMatrixContainer::size_type, IMatrixContainer::size_type, bool>())
-        .def(py::init<const IMatrixContainer::Dimension&>()) // ?
-        .def(py::init<const IMatrixContainer::Dimension&, bool>()) // ?
+        .def(py::init<const IMatrixContainer::Dimension&, bool>())
+        .def(py::init<const IMatrixContainer::Dimension&>())
         .def("numberOfRows", &IMatrixContainer::numberOfRows)
         .def("numberOfColumns", &IMatrixContainer::numberOfColumns)
         .def("size", &IMatrixContainer::size)

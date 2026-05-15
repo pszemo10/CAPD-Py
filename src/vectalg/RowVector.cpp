@@ -47,4 +47,6 @@ void wrapRowVector(pybind11::module &mod){
                 return oss.str();
             })
         ;
+    
+    mod.def("diam", &diam<ScalarType, CAPD_DEFAULT_DIMENSION>);
 }
