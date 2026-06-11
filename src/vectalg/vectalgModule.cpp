@@ -8,7 +8,7 @@
 #include "Norm.cpp"
 #include "Multiindex.cpp"
 
-void wrapVectalg(pybind11::module &mod) {
+void wrapVectalgModule(pybind11::module &mod) {
     wrapContainer(mod);
     wrapVector(mod);
     wrapMatrixContainer(mod);

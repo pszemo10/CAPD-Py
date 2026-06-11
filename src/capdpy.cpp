@@ -3,23 +3,23 @@
 #include <pybind11/operators.h>
 #include <pybind11/native_enum.h>
 #include "intervals/intervals.cpp"
-#include "vectalg/vectalg.cpp"
+#include "vectalg/vectalgModule.cpp"
 #include "matrixAlgorithms/matrixAlgorithms.cpp"
-#include "map/map.cpp"
-#include "diffAlgebra/diffAlgebra.cpp"
+#include "map/mapModule.cpp"
+#include "diffAlgebra/diffAlgebraModule.cpp"
 #include "dynset/dynset.cpp"
-#include "dynsys/dynsys.cpp"
-#include "poincare/poincare.cpp"
+#include "dynsys/dynsysModule.cpp"
+#include "poincare/poincareModule.cpp"
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(capdpy, m, py::mod_gil_not_used()){
     wrapIntervals(m);
-    wrapVectalg(m);
+    wrapVectalgModule(m);
     wrapMatrixAlgorithms(m);
     wrapMapModule(m);
-    wrapDiffAlgebra(m);
+    wrapDiffAlgebraModule(m);
     wrapDynset(m);
-    wrapDynsys(m);
-    wrapPoincare(m);
+    wrapDynsysModule(m);
+    wrapPoincareModule(m);
 }

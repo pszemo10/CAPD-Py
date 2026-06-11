@@ -12,7 +12,7 @@
 #include "C2OdeSolver.cpp"
 #include "CnOdeSolver.cpp"
 
-void wrapDynsys(pybind11::module& mod) {
+void wrapDynsysModule(pybind11::module& mod) {
     using namespace capd;
     using namespace capd::dynsys;
     using IMap = map::Map<vectalg::Matrix<interval, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>>;

@@ -20,7 +20,7 @@
 #include "TimeJet.cpp"
 #include "SolutionCurve.cpp"
 
-void wrapDiffAlgebra(pybind11::module_& mod){
+void wrapDiffAlgebraModule(pybind11::module_& mod){
     using namespace capd;
     using namespace capd::diffAlgebra;
     using IMap = map::Map<vectalg::Matrix<interval, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>>;

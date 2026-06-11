@@ -13,7 +13,7 @@
 #include "BasicPoincareMap.cpp"
 #include "PoincareMap.cpp"
 
-void wrapPoincare(pybind11::module& mod)
+void wrapPoincareModule(pybind11::module& mod)
 {
     using namespace capd;
     using IMap = map::Map<vectalg::Matrix<interval, CAPD_DEFAULT_DIMENSION, CAPD_DEFAULT_DIMENSION>>;
