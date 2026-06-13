@@ -39,9 +39,6 @@ void wrapBasicPoincareMap(pybind11::module& mod, const std::string& name)
         .def("__call__", py::overload_cast<VectorType, ScalarType&>(&BasicPoincareMapType::operator()),
             "Computes value of Poincare Map.",
             py::arg("v"), py::arg("in_out_time"))
-        // .def("__call__", py::overload_cast<const VectorType&, VectorType&>(&BasicPoincareMapType::operator()),
-        //     "Computes value of Poincare Map.",
-        //     py::arg("v"), py::arg("afterSection"))
         .def("__call__", py::overload_cast<VectorType, VectorType&, ScalarType&>(&BasicPoincareMapType::operator()),
             "Computes value of Poincare Map.",
             py::arg("v"), py::arg("afterSection"), py::arg("in_out_time"))

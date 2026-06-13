@@ -179,11 +179,11 @@ void wrapIntervals(pybind11::module &mod){
         [](const interval &a, const interval &p, const interval &c) {
             return solveAffineInclusion(a, p, c);
         }, "solves inclusion a+[0,t]*p \\subset c for t");
-    // mod.def("solveAffineInclusionWithDir",
-    //     [](const interval &a, const interval &p, const interval &c, int &dir) {
-    //         interval result = solveAffineInclusion(a, p, c, dir);
-    //         return std::make_tuple(result, dir);
-    //     }, "solves inclusion a+[0,t]*p \\subset c for t");
+    mod.def("solveAffineInclusionWithDir",
+        [](const interval &a, const interval &p, const interval &c, int &dir) {
+            interval result = solveAffineInclusion(a, p, c, dir);
+            return std::make_tuple(result, dir);
+        }, "solves inclusion a+[0,t]*p \\subset c for t");
     mod.def("width", &capd::filib::template width<interval::BoundType, 
             ::filib::native_directed, ::filib::i_mode_normal>);
 
