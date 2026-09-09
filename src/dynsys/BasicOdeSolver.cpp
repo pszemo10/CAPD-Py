@@ -82,7 +82,7 @@ void wrapBasicOdeSolver(pybind11::module& mod, const std::string& name) {
             "a mask for computation of partial derivtives. The method causes undefined behavior if a multiindex "
             "in the collection exceeds limits of the vector field (like dimension, maximal allowed degree).")
         .def("addMultiindexToMask", &BasicOdeSolverType::addMultiindexToMask,
-            "Adds new multiindex (along with dependencies) to the \b existing mask. "
+            "Adds new multiindex (along with dependencies) to the existing mask. "
             "causes undefined behavior if the mask has not been set before call to this method.")
         .def("resetMask", &BasicOdeSolverType::resetMask,
             "Resets the mask of derivatives. In consequence, full jet of derivatives will be computed after call "

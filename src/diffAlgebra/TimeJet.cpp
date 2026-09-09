@@ -22,6 +22,8 @@ void wrapTimeJet(pybind11::module& mod) {
         .def(py::init<const ITimeRange::ScalarType&>())
         .def("getCurrentTime", &ITimeRange::getCurrentTime)
         .def("setCurrentTime", &ITimeRange::setCurrentTime)
+        .doc() = "TimeRange is a base class for all types of sets. It stores the current time in ODE case "
+                "or number of iterations in the case of discrete dynamical system case."
         ;
 
     py::class_<IC0TimeJet, ITimeRange>(mod, "IC0TimeJet")
@@ -82,5 +84,11 @@ void wrapTimeJet(pybind11::module& mod) {
         }), py::keep_alive<1, 2>())
         .def("vector", py::overload_cast<>(&ICnTimeJet::vector, py::const_))
         .def("degree", &ICnTimeJet::degree)
+        .doc() = "This class represents a jet of solution to a nonautomnomous ODE. "
+                "This is a truncated power series of degree D of a function "
+                " t to R^n"
+                "at given time \n\n"
+                "The base class Jet is used to store coefficients of the jet. "
+                "The base class TimeRange is used to store current time. "
         ;
 }

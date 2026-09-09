@@ -66,6 +66,7 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&Norm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &Norm<IVector, IMatrix>::show)
         .def("clone", &Norm<IVector, IMatrix>::clone)
+        .doc() = "A general abstract norm"
     ;
 
     py::class_<EuclNorm<IVector, IMatrix>, PyNormImpl<EuclNorm<IVector, IMatrix>>, py::smart_holder>(mod, "IEuclNorm")
@@ -74,6 +75,7 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&EuclNorm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &EuclNorm<IVector, IMatrix>::show)
         .def("clone", &EuclNorm<IVector, IMatrix>::clone)
+        .doc() = "Euclidean norm"
     ;
 
     py::class_<MaxNorm<IVector, IMatrix>, PyNormImpl<MaxNorm<IVector, IMatrix>>, py::smart_holder>(mod, "IMaxNorm")
@@ -82,6 +84,7 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&MaxNorm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &MaxNorm<IVector, IMatrix>::show)
         .def("clone", &MaxNorm<IVector, IMatrix>::clone)
+        .doc() = "l_infty norm (max norm)"
     ;
 
     py::class_<SumNorm<IVector, IMatrix>, PyNormImpl<SumNorm<IVector, IMatrix>>, py::smart_holder>(mod, "ISumNorm")
@@ -90,6 +93,7 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&SumNorm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &SumNorm<IVector, IMatrix>::show)
         .def("clone", &SumNorm<IVector, IMatrix>::clone)
+        .doc() = "l_1 norm"
     ;
 
     py::class_<EuclLNorm<IVector, IMatrix>, PyNormImpl<EuclLNorm<IVector, IMatrix>>, py::smart_holder>(mod, "IEuclLNorm")
@@ -98,6 +102,7 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&EuclLNorm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &EuclLNorm<IVector, IMatrix>::show)
         .def("clone", &EuclLNorm<IVector, IMatrix>::clone)
+        .doc() = "Euclidean Logarithmic Norm"
     ;
 
     py::class_<MaxLNorm<IVector, IMatrix>, PyNormImpl<MaxLNorm<IVector, IMatrix>>, py::smart_holder>(mod, "IMaxLNorm")
@@ -106,6 +111,7 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&MaxLNorm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &MaxLNorm<IVector, IMatrix>::show)
         .def("clone", &MaxLNorm<IVector, IMatrix>::clone)
+        .doc() = "l_infty Logarithmic Norm"
     ;
 
     py::class_<SumLNorm<IVector, IMatrix>, PyNormImpl<SumLNorm<IVector, IMatrix>>, py::smart_holder>(mod, "ISumLNorm")
@@ -114,5 +120,6 @@ void wrapNorm(pybind11::module &mod){
         .def("__call__", py::overload_cast<const IMatrix&>(&SumLNorm<IVector, IMatrix>::operator(), py::const_))
         .def("show", &SumLNorm<IVector, IMatrix>::show)
         .def("clone", &SumLNorm<IVector, IMatrix>::clone)
+        .doc() = "l_1 Logarithmic norm"
     ;
 }

@@ -24,5 +24,13 @@ void wrapSolutionCurve(pybind11::module& mod, const std::string& baseName, const
         .def("derivative", &SolutionCurveType::derivative)
         .def("hessian", &SolutionCurveType::hessian)
         .def("jet", &SolutionCurveType::jet)
+        .doc() = "This is class that represents parametric curve in R^n. "
+                "Internally it is represented by piecewise polynomial approximation. \n"
+                "It can also store higher order partial derivatives with respect to space variables, i.e. \n"
+                "c(t,x) can be a polynomial both with respect to main "
+                "parameterization variable 't' and space variable 'x'. \n"
+                "The curve can be evaluated at given time 't' as well as differentiated with respect to 't'. \n"
+                "The curve can store rigorous enclosures of curves. "
+                "They are represented using mean value form to reduce some wrapping effect."
         ;
 }

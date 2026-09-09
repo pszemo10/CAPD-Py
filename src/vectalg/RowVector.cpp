@@ -46,6 +46,9 @@ void wrapRowVector(pybind11::module &mod){
                 oss << rv;
                 return oss.str();
             })
+        .doc() = "RowVector class realizes a vector without its own container. "
+            "He is just a reference to a part of other object (i.e. Matrix of Vector) "
+            "with his own container."
         ;
     
     mod.def("diam", &diam<ScalarType, CAPD_DEFAULT_DIMENSION>);

@@ -51,5 +51,7 @@ void wrapHessian(pybind11::module_& mod){
         .def(py::init([](const C2Set& set){
             return (IHessian)set;
         }))
+        .doc() = "This class is used to store second order partial derivatives of a function R^D\to R^M . "
+                "It provides indexing, iterators and some algorithms for hessians."
         ;
 }

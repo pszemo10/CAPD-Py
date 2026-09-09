@@ -21,5 +21,7 @@ void wrapMatrixContainer(pybind11::module &mod){
                 IMatrixContainer::size_type,
                 IMatrixContainer::size_type>
             (&IMatrixContainer::resize))
+        .doc() = "This class inherits from general Container class "
+                "and provides constructors and methods specific for two dimensional data"
         ;
 }

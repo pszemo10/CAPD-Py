@@ -17,5 +17,9 @@ void wrapParametricCurve(pybind11::module& mod, const std::string& name)
         .def("setDomain", &IParametricCurve::setDomain)
         .def("getLeftDomain", &IParametricCurve::getLeftDomain)
         .def("getRightDomain", &IParametricCurve::getRightDomain)
+        .doc() = "This is an abstract class that represents parametric curve in R^n. "
+                "We do not specify how it is represented in the memory \n."
+                "The curve can be evaluated at given time 't' as well as differentiated with respect to 't' \n."
+                "The curve can store rigorous enclosures of curves."
         ;
 }

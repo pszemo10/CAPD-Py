@@ -71,6 +71,9 @@ void wrapCnContainer(pybind11::module_& mod){
             "Iterators and multipointers read coefficients of a homogeneous polynomial in the same order.")
         .def("hasNext", py::overload_cast<Multipointer&>(&ICnContainer::hasNext, py::const_), "see description of the method first.")
         .def("hasNext", py::overload_cast<Multiindex&>(&ICnContainer::hasNext, py::const_), "see description of the method first.")
-        // .def(py::self == py::self)
+        .def(py::self == py::self)
+        .doc() = "The class is used to store coefficients of a multivariate polynomial of degree D "
+                " f:R^N->R^M "
+                "The total number of coefficients is equal to  M {N+D choose D} "
         ;
 }

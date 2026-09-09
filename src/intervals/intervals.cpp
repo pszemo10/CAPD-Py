@@ -17,7 +17,9 @@ void wrapIntervals(pybind11::module &mod){
         .def("leftBound", &interval::leftBound, "returns the left end of the interval")
         .def("rightBound", &interval::rightBound, "returns the right end of the interval")
         .def("inf", &interval::inf, "returns the left end of the interval")
-        .def("sup", &interval::sup, "returns the right endof the interval")
+        .def("sup", &interval::sup, "returns the right end of the interval")
+        .def("left", &interval::left, "returns interval containing left end")
+        .def("right", &interval::right, "returns interval containing right end")
         .def("contains", 
             py::overload_cast<const double &>(&interval::template contains<double>, py::const_),
             "checks if interval contains given point X")
@@ -131,11 +133,11 @@ void wrapIntervals(pybind11::module &mod){
             split(A_iv, mid, r);
             return std::make_tuple(mid, r);
         },
-        "On output:  iv \\subset Mid + [-diam , diam]");
+        "On output:  iv subset of Mid + [-diam , diam]");
     mod.def("isSingular", [](const interval &A_x) { return isSingular(A_x); });
     mod.def("power", 
         static_cast<interval (*)(const interval &, int)>(
-            [](const interval &x, int n) { return power(x, n); })); // which types?
+            [](const interval &x, int n) { return power(x, n); }));
     mod.def("power", 
         static_cast<interval (*)(const interval &, unsigned)>(
             [](const interval &x, unsigned n) { return power(x, n); }));
@@ -178,12 +180,12 @@ void wrapIntervals(pybind11::module &mod){
     mod.def("solveAffineInclusion",
         [](const interval &a, const interval &p, const interval &c) {
             return solveAffineInclusion(a, p, c);
-        }, "solves inclusion a+[0,t]*p \\subset c for t");
+        }, "solves inclusion a+[0,t]*p subset of c for t");
     mod.def("solveAffineInclusionWithDir",
         [](const interval &a, const interval &p, const interval &c, int &dir) {
             interval result = solveAffineInclusion(a, p, c, dir);
             return std::make_tuple(result, dir);
-        }, "solves inclusion a+[0,t]*p \\subset c for t");
+        }, "solves inclusion a+[0,t]*p subset of c for t");
     mod.def("width", &capd::filib::template width<interval::BoundType, 
             ::filib::native_directed, ::filib::i_mode_normal>);
 

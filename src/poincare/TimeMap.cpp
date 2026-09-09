@@ -122,7 +122,10 @@ void wrapTimeMap(pybind11::module& mod, const std::string& name)
         .def("onOffStepControl", &TimeMapType::onOffStepControl)
         .def("stopAfterStep", &TimeMapType::stopAfterStep)
         .def("completed", &TimeMapType::completed)
-        .def("getCurrentTime", &TimeMapType::getCurrentTime);
+        .def("getCurrentTime", &TimeMapType::getCurrentTime)
+        .doc() = "TimeMap class provides methods for transport of sets (or points) "
+                "by a given flow over some time interval."
+        ;
 
     if constexpr(wrapHOSets)
     {

@@ -22,9 +22,9 @@ void wrapColumnVector(pybind11::module &mod){
         .def("normalize", &IColumnVector::normalize)
         .def("dimension", &IColumnVector::dimension)
         .def("next", &IColumnVector::next)
-        // .def("__iter__", [](const IColumnVector &cv) {
-        //     return py::make_iterator(cv.begin(), cv.end());
-        // }, py::keep_alive<0, 1>())
+        .def("__iter__", [](const IColumnVector &cv) {
+            return py::make_iterator(cv.begin(), cv.end());
+        }, py::keep_alive<0, 1>())
         .def("assertEqualSize", &IColumnVector::assertEqualSize)
         .def("__repr__",
             [](const IColumnVector &cv) {
@@ -47,5 +47,8 @@ void wrapColumnVector(pybind11::module &mod){
         .def(py::self / ScalarType())
         .def(py::self *= ScalarType())
         .def(py::self /= ScalarType())
+        .doc() = "This class realizes a vector without its own container, which is a reference "
+                    "to a subset of other object with his own container. "
+                    "A typical situation is a column of matrix which can be considered as a vector"
         ;
 }

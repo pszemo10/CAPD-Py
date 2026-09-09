@@ -24,5 +24,7 @@ void wrapCurve(pybind11::module& mod, const std::string& name)
         .def("valueAtCenter", &ICurve::valueAtCenter)
         .def("remainder", &ICurve::remainder)
         .def("getCenter", &ICurve::getCenter)
+        .doc() = "This class provides methods for evaluation of the parametric curve "
+                "for a given parameter value."
         ;
 }

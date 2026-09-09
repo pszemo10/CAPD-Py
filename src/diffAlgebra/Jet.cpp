@@ -45,6 +45,8 @@ void wrapJet(pybind11::module_& mod){
         .def("__add__", &::operator+<IJet::MatrixType, CAPD_DEFAULT_DIMENSION>)
         .def("__sub__", &::operator-<IJet::MatrixType, CAPD_DEFAULT_DIMENSION>)
         .def("__matmul__", &::operator*<IJet::MatrixType, CAPD_DEFAULT_DIMENSION>)
+        .doc() = "The class is used to store coefficients of a truncated power series to degree D"
+                " f:R^N->R^M "
         ;
 
     mod.def("substitutionPowerSeries", &substitutionPowerSeries<IJet::MatrixType, CAPD_DEFAULT_DIMENSION>,

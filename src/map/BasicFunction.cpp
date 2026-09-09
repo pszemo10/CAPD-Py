@@ -42,7 +42,7 @@ void wrapBasicFunction(pybind11::module &mod) {
             self.setMask(multiindices.begin(), multiindices.end());
         })
         .def("addMultiindexToMask", &IBasicFunction::addMultiindexToMask,
-            "Adds new multiindex (along with dependencies) to the \b existing mask.")
+            "Adds new multiindex (along with dependencies) to the existing mask.")
         .def("resetMask", &IBasicFunction::resetMask,
             "Resets the mask of derivatives. In consequence, full jet of derivatives will be computed "
             "after call to any method that computes derivative, hessian or jet.")

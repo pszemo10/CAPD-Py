@@ -30,5 +30,6 @@ void wrapContainer(pybind11::module &mod){
         .def("size", &IContainer::size)
         .def("empty", &IContainer::empty)
         .def("clear", &IContainer::clear)
+        .doc() = "This class is used as a container for vectors, matrices and higher order containers"
         ;
 }

@@ -17,5 +17,7 @@ void wrapC2Curve(pybind11::module_& mod)
         .def(py::init<Real, Real, size_type, size_type, size_type>())
         .def("hessian", &IC2Curve::hessian)
         .def("setInitHessian", &IC2Curve::setInitHessian)
+        .doc() = "This class provides methods for evaluation of the parametric curve "
+                "for a given parameter value."
         ;
 }

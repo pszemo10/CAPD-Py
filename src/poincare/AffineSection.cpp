@@ -18,5 +18,7 @@ void wrapAffineSection(pybind11::module& mod)
         .def("getNormalVector", &IAffineSection::getNormalVector)
         .def("gradient", &IAffineSection::gradient)
         .def("evalAt", &IAffineSection::evalAt)
+        .doc() = "This class serves as an affine Poincare section. The section is defined by two vectors"
+                " - new origin of coordinate system and normal vector to hyperplane."
         ;
 }

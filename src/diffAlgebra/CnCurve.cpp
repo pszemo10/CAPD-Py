@@ -19,5 +19,7 @@ void wrapCnCurve(pybind11::module_& mod)
         .def("setInitJet", &ICnCurve::setInitJet)
         .def("eval", &ICnCurve::eval)
         .def("jet", &ICnCurve::jet)
+        .doc() = "This class provides methods for evaluation of the parametric curve "
+                "for a given parameter value."
         ;
 }

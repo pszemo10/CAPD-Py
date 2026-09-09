@@ -28,5 +28,9 @@ void wrapCoordinateSection(pybind11::module& mod)
         .def("computeDT", py::overload_cast<const JetType&, const JetType&, JetType&, size_type>
             (&ICoordinateSection::computeDT, py::const_),
             py::arg("Px"), py::arg("vfOnPx"), py::arg("dT"), py::arg("degree"))
+        .doc() = "This class serves as Poincare section of the form x_i = c.\n"
+                "The section is defined by:\n"
+                "- integer - index of variable\n"
+                "- constant c that defines affine hyperplane x_i=c"
         ;
 }

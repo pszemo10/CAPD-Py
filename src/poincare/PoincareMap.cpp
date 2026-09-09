@@ -78,6 +78,9 @@ void wrapC1Methods(pybind11::class_<
         (&PoincareMapType::operator()),
         "Computes value of n-th iterate of Poincare Map and derivatives of the flow  (used for C^1 sets)",
         py::arg("set"), py::arg("dF"), py::arg("n") = 1)
+    .doc() = "PoincareMap class rigorously computes Poincare Map. \n"
+            "For given Dynamical System and section it rigorously computes first return map "
+            "to section (Poincare Map) and its derivatives."
     ;
 }
 

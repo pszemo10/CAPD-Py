@@ -5,7 +5,13 @@ void wrapCrossingDirection(pybind11::module& mod)
     namespace py = pybind11;
     using namespace capd::poincare;
 
-    py::native_enum<CrossingDirection>(mod, "CrossingDirection", "enum.Enum")
+    py::native_enum<CrossingDirection>(mod, "CrossingDirection", "enum.Enum",
+            "Defines constants to specify section crossing direction\n\n"
+            "Section is given zeros of some scalar function.\n"
+            "PlusMinus means that we want to cross section comming from positive values "
+            "and going to negative ones (MinusPlus means opposite direction).\n"
+            "Constant None means that we do not specify direction, both are allowed."
+            )
         .value("PlusMinus", PlusMinus)
         .value("Both", Both)
         .value("MinusPlus", MinusPlus)
@@ -118,11 +124,13 @@ void wrapBasicPoincareMap(pybind11::module& mod, const std::string& name)
             "and never intersect Poincare section. "
             "Default value is maxReturnTime = 1000.")
         .def("setBlowUpMaxNorm", &BasicPoincareMapType::setBlowUpMaxNorm,
-            "Sets threshold value of \f$ L_1\f$ norm that is considered as a blow up of the solution. "
+            "Sets threshold value of l_1 norm that is considered as a blow up of the solution. "
             "A trajectory may escape to infinity in finite time without crossing Poincare section. "
-            "If the \f$ L_1 \f$ norm of a point on trajectory is bigger than this threshold value "
+            "If the l_1 norm of a point on trajectory is bigger than this threshold value "
             "then an exception is thrown. "
             "Default value is blowUpMaxNorm = 1e+10.")
+        .doc() = "For given Dynamical System and section it computes first return map "
+                "and its derivatives but non-rigorously (i.e. without handling any computational errors)."
         ;
 
         if constexpr(wrapComputeDP)

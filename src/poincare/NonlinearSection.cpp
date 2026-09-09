@@ -21,5 +21,6 @@ void wrapNonlinearSection(pybind11::module& mod)
             INonlinearSection::JetType&, INonlinearSection::size_type>
             (&INonlinearSection::computeDT, py::const_),
             py::arg("Px"), py::arg("vfOnPx"), py::arg("dT"), py::arg("degree"))
+        .doc() = "This class defines a section defined by an arbitrary function"
         ;
 }

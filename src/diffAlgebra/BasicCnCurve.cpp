@@ -42,5 +42,13 @@ void wrapBasicCnCurve(pybind11::module_& mod)
             (&IBasicCnCurve::remainderCoefficient, py::const_))
         .def("remainderCoefficient", py::overload_cast<size_type, size_type, size_type, size_type, size_type>
             (&IBasicCnCurve::remainderCoefficient, py::const_))
-        ;
+        
+        .doc() = "This class is a data structure for storing of a parametric curve "
+                "together with its partial derivatives with respect to initial point "
+                "up to desired order.\n\n "
+                "More precisely, a curve c(t,x) is represented as "
+                "c(t,x_0) + d/dx c(t,x)(x-x_0) + smallRemainder(t,x).\n\n "
+                "Derivatives are represented as d^i c(t,x) + smallRemainder(t,x). "
+                "This class provides a member functions for accessing of all coefficients. "
+    ;
 }

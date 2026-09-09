@@ -25,5 +25,11 @@ void wrapBasicC2Curve(pybind11::module_& mod){
         .def("hessianRemainderCoefficientsIterator", [](IBasicC2Curve& c, size_type j){
             return py::make_iterator(c.beginHessianRemainderCoefficients(j), c.endHessianRemainderCoefficients(j));
         }, py::keep_alive<0, 1>())
+        .doc() = "This class is a data structure for storing of a parametric curve "
+                "together with first and second order derivatives with respect to initial point. \n\n"
+                "More precisely, a curve c(t,x) is represented as "
+                "c(t,x_0) + d/dx c(t,x)(x-x_0) + smallRemainder(t,x) \n\n"
+                "This class provides a member functions for accessing of all coefficients. \n\n"
+                "This class is a basic class for more general C2Curve.) "
         ;
 }

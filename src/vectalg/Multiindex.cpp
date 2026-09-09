@@ -55,6 +55,12 @@ void wrapMultiindex(pybind11::module &mod)
             (&Multipointer::index, py::const_))
         .def("index", py::overload_cast<Multipointer::size_type, Multipointer::size_type, const Multipointer&>
             (&Multipointer::index, py::const_))
+        .doc() = "Multipointer always contains nondecreasing list of indexes of variables. "
+                "For partial derivatives they denote variables with respect to which we differentiate. "
+                "For example, a Multipointer mp=(0,0,2,3) corresponds to partial derivative "
+                ":math:`\frac{\partial^4}{\partial x_0^2 \partial x_2 \partial x_3}`$ "
+                "For power series multipointer denotes variables that form monomial. "
+                "e.g.Multipointer mp=(0,0,2,3) correspond to monomial x_0^2x_2x_3"
         ;
 
     mod.def("sumMultipointers", &sumMultipointers);
@@ -81,6 +87,13 @@ void wrapMultiindex(pybind11::module &mod)
         .def("module", &Multiindex::module, "returns sum of multiindex coordinates (i.e. degree of monomial)")
         .def("factorial", &Multiindex::factorial, "for multiindex (a,b,..,n) returns a!b!...n!")
         .def("index", &Multiindex::index, "computes index in the array that corresponds to this multiindex")
+        .doc() = "For a Multiindex mi, mi[p] is a number of differentiation with respect to i-th variable. "
+                "For example, a Multipointer mp=(0,0,2,3) in 5-dimensional space corresponds to "
+                "the Multiindex mi=(2,0,1,1,0). "
+                "Hence, Multiindex agrees with standard notation and it contains an additional information "
+                "about the dimension of the domain of the function. "
+                "For polynomial:  Multiindex stores exponents of a given monomial. "
+                "e.g. monomial x^2 z^3 of 4 variables (x,y,z,t) has multiindex (2,0,3,0) "
         ;
 
     mod.def("power", py::overload_cast<
