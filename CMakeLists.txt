@@ -12,7 +12,6 @@ add_subdirectory(lib/CAPD)
 
 add_subdirectory(lib/pybind11)
 pybind11_add_module(capdpy src/capdpy.cpp)
-# target_include_directories(capdpy PRIVATE src/utils)
 
 target_link_libraries(capdpy PRIVATE capd filib)
 
